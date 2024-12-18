@@ -3,7 +3,7 @@ use std::error::Error;
 use daichi::*;
 use poise::FrameworkError;
 
-pub async fn on_error_owner(error: FrameworkError<'_, Data, daichi::Error>) {
+pub async fn on_error_owner(error: FrameworkError<'_, DcData, daichi::Error>) {
     error
         .ctx()
         .unwrap()
@@ -11,7 +11,7 @@ pub async fn on_error_owner(error: FrameworkError<'_, Data, daichi::Error>) {
         .await
         .unwrap();
 }
-pub async fn on_error_user(error: FrameworkError<'_, Data, daichi::Error>) {
+pub async fn on_error_user(error: FrameworkError<'_, DcData, daichi::Error>) {
     error
         .ctx()
         .unwrap()

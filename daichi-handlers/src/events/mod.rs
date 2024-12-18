@@ -12,8 +12,8 @@ mod voice_event;
 pub async fn event_handler(
     ctx: &serenity::Context,
     event: &serenity::FullEvent,
-    framework: poise::FrameworkContext<'_, Data, Error>,
-    _data: &Data,
+    framework: poise::FrameworkContext<'_, DcData, Error>,
+    _data: &DcData,
 ) -> Result<()> {
     match event {
         serenity::FullEvent::Ready { data_about_bot } => ready::ready(data_about_bot).await?,

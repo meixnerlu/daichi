@@ -26,7 +26,7 @@ async fn main() {
             },
             ..Default::default()
         })
-        .setup(move |_ctx, _ready, _framework| Box::pin(async { Ok(Data::new().await) }))
+        .setup(move |_ctx, _ready, _framework| Box::pin(async { Ok(DcData()) }))
         .build();
 
     let songbird_config =

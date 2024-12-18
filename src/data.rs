@@ -10,6 +10,16 @@ static DATACELL: OnceCell<Data> = OnceCell::new();
 
 type GuildCache = Cache<serenity::GuildId, Option<serenity::RoleId>>;
 
+// I know this is ugly
+#[derive(Debug, Clone)]
+pub struct DcData();
+
+impl DcData {
+    pub async fn data() -> &'static Data {
+        Data::global().await
+    }
+}
+
 #[derive(Debug, Clone)]
 pub struct Data {
     db: Database,
@@ -17,7 +27,7 @@ pub struct Data {
 }
 
 impl Data {
-    pub async fn new() -> Self {
+    async fn new() -> Self {
         let uri = env::var("MONGODB").expect("MONGODB to be present");
         let client = Client::with_uri_str(uri)
             .await
