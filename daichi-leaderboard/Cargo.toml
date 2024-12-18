@@ -1,0 +1,13 @@
+[package]
+name = "daichi-leaderboard"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+tokio-cron-scheduler = "0.13.0"
+ascii_table = "4.0.5"
+daichi = { workspace = true }
+daichi-models = { workspace = true }
+tokio = { workspace = true }
+bson = { workspace = true }
+chrono = { workspace = true }

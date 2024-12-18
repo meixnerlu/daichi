@@ -1,0 +1,17 @@
+[package]
+name = "daichi-handlers"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+daichi = { workspace = true }
+daichi-utils = { workspace = true }
+daichi-leaderboard = { workspace = true }
+daichi-models = { workspace = true }
+poise = { workspace = true }
+songbird = { workspace = true }
+symphonia = { version = "0.5.4", features = ["wav"] }
+arraydeque = "0.5.1"
+hound = "3.5.1"
+once_cell = "1.20.2"
+tokio = "1.42.0"

@@ -1,0 +1,11 @@
+[package]
+name = "daichi-models"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+mongodb = { workspace = true }
+daichi = { workspace = true }
+serde = { workspace = true }
+chrono = { workspace = true }
+bson = { workspace = true }

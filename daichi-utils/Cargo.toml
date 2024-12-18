@@ -1,0 +1,11 @@
+[package]
+name = "daichi-utils"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+daichi-models = { workspace = true }
+daichi = { workspace = true }
+poise = { workspace = true }
+serde = { workspace = true }
+mongodb = { workspace = true }

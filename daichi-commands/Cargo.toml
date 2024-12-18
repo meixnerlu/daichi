@@ -1,0 +1,11 @@
+[package]
+name = "daichi-commands"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+daichi = { workspace = true }
+daichi-handlers = { workspace = true }
+daichi-utils = { workspace = true }
+daichi-models = { workspace = true }
+poise = { workspace = true }
