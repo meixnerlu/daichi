@@ -21,8 +21,6 @@ pub async fn leaderboards(ctx: &serenity::Context) -> Result<()> {
             Job::new_async(std::env::var("LEADERBOARD").unwrap(), move |_, _| {
                 let ctx_clone = ctx_clone.clone();
                 Box::pin(async move {
-                    println!("Running leaderboard task");
-
                     if let Err(e) = handle_leaderboards(&ctx_clone).await {
                         println!("Error running handle_leaderboard: \n {e:#?}");
                     }
