@@ -10,15 +10,10 @@ static DATACELL: OnceCell<Data> = OnceCell::new();
 
 type GuildCache = Cache<serenity::GuildId, Option<serenity::RoleId>>;
 
-// I know this is ugly
+// I want to use OnceCell not the build in data in poise so I dont have to pass it to data
+// functions
 #[derive(Debug, Clone)]
 pub struct DcData();
-
-impl DcData {
-    pub async fn data() -> &'static Data {
-        Data::global().await
-    }
-}
 
 #[derive(Debug, Clone)]
 pub struct Data {
