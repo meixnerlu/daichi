@@ -16,7 +16,7 @@ pub async fn event_handler(
     _data: &DcData,
 ) -> Result<()> {
     match event {
-        serenity::FullEvent::Ready { data_about_bot } => ready::ready(data_about_bot).await?,
+        serenity::FullEvent::Ready { data_about_bot } => ready::ready(ctx, data_about_bot).await?,
         serenity::FullEvent::CacheReady { guilds } => {
             sync_user_states(ctx, guilds.clone()).await?;
             leaderboards(ctx).await?;
