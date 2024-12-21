@@ -1,6 +1,7 @@
 use daichi::*;
 use poise::command;
 
+mod change_afk;
 mod delete;
 mod replace;
 mod role_button;
@@ -19,7 +20,8 @@ mod setup;
         "delete::delete",
         "role_button::role_button",
         "setup::setup",
-        "replace::replace"
+        "replace::replace",
+        "change_afk::change_afk"
     ),
     subcommand_required
 )]
