@@ -1,7 +1,9 @@
 use daichi::*;
 use poise::command;
 
-/// Shows the help texts
+/// shows the help texts
+///
+/// use `/help <command>` to get detailed help
 #[command(slash_command, guild_only, ephemeral)]
 pub async fn help(ctx: Context<'_>, command: Option<String>) -> Result<()> {
     let config = poise::builtins::HelpConfiguration {

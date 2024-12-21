@@ -17,20 +17,24 @@ members = [
 poise = { workspace = true }
 mongodb = { workspace = true }
 async-once-cell = "0.5.4"
-moka = { version = "0.12.8", features = ["sync", "future"] }
+moka = { version = "0.12.8", features = ["future"] }
 
 [workspace.dependencies]
+# generally important
+tokio = { version = "1.42.0", features = ["full"] }
 serde = { version = "1.0.216", features = ["derive"] }
+chrono = "0.4.38"
+# workspace crates
 daichi = { version = "*", path = "." }
-poise = { version = "0.6.1", features = ["cache"] }
 daichi-handlers = { version = "*", path = "./daichi-handlers" }
 daichi-commands = { version = "*", path = "./daichi-commands" }
 daichi-leaderboard = { version = "*", path = "./daichi-leaderboard" }
 daichi-utils = { version = "*", path = "./daichi-utils" }
 daichi-models = { version = "*", path = "./daichi-models" }
+# discord crates
+poise = { version = "0.6.1", features = ["cache"] }
 serenity = { version = "0.12.4", features = ["voice"] }
-mongodb = "3.1.0"
 songbird = { version = "0.4.6", features = ["receive", "builtin-queue"] }
-tokio = { version = "1.42.0", features = ["full"] }
-chrono = "0.4.38"
+# mongodb crates
+mongodb = "3.1.0"
 bson = { version = "2.13.0", features = ["chrono-0_4"] }

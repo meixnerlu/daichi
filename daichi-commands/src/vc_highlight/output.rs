@@ -4,7 +4,7 @@ use daichi_handlers::on_error_user;
 use daichi_handlers::VoiceCache;
 use poise::{command, CreateReply};
 
-/// Outputs the current highlight directly as a wav file
+/// Safes the last minute directly as a wav file
 #[command(
     slash_command,
     guild_only,

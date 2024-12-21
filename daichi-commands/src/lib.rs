@@ -4,11 +4,11 @@ mod about;
 mod help;
 mod leaderboard;
 mod owner;
-mod voice_highlights;
+mod vc_highlight;
 
 pub fn get_commands() -> Vec<poise::Command<DcData, Error>> {
     vec![
-        voice_highlights::voice_highlights(),
+        vc_highlight::vc_highlight(),
         leaderboard::leaderboard(),
         about::about(),
         owner::owner(),

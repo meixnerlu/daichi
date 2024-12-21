@@ -3,7 +3,7 @@ use daichi_handlers::on_error_user;
 use daichi_handlers::*;
 use poise::command;
 
-/// Makes the bot join the channel you specify
+/// Daichi will join the channel you specify
 #[command(slash_command, guild_only, ephemeral, on_error = "on_error_user")]
 pub async fn join(
     ctx: Context<'_>,
