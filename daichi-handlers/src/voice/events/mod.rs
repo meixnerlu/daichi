@@ -1,5 +1,8 @@
 use daichi::serenity::{async_trait, GuildId};
-use std::sync::{Arc, Mutex};
+use std::{
+    ops::Deref,
+    sync::{Arc, Mutex},
+};
 use voice_tick::handle_voice_tick;
 
 use super::cache::VoiceCache;
@@ -17,17 +20,13 @@ impl VoiceHandler {
             inner: Arc::new(Mutex::new(InnerVoiceHandler::new(guild_id))),
         }
     }
-
-    pub fn get_inner(&self) -> Arc<Mutex<InnerVoiceHandler>> {
-        self.inner.clone()
-    }
 }
 
-impl Default for VoiceHandler {
-    fn default() -> Self {
-        Self {
-            inner: Arc::new(Mutex::new(InnerVoiceHandler::default())),
-        }
+impl Deref for VoiceHandler {
+    type Target = Mutex<InnerVoiceHandler>;
+
+    fn deref(&self) -> &Self::Target {
+        &self.inner
     }
 }
 
@@ -47,9 +46,9 @@ impl InnerVoiceHandler {
     }
 
     pub fn handle_new_tick(&mut self, tick: Vec<i16>) {
+        self.buffer.push(tick);
         if self.buffer_state < 5 {
             self.buffer_state += 1;
-            self.buffer.push(tick);
         } else {
             self.buffer_state = 0;
             VoiceCache::add(self.guild_id, self.buffer.concat());

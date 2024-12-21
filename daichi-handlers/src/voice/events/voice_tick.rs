@@ -6,7 +6,6 @@ use super::VoiceHandler;
 pub async fn handle_voice_tick(handler: &VoiceHandler, tick: &VoiceTick) -> Result<()> {
     if tick.speaking.is_empty() {
         handler
-            .get_inner()
             .lock()
             .unwrap()
             .handle_new_tick(generate_silent_audio());
@@ -26,11 +25,7 @@ pub async fn handle_voice_tick(handler: &VoiceHandler, tick: &VoiceTick) -> Resu
         .map(|i| tickdata.iter().map(|inner| inner[i]).sum())
         .collect();
 
-    handler
-        .get_inner()
-        .lock()
-        .unwrap()
-        .handle_new_tick(collapsed);
+    handler.lock().unwrap().handle_new_tick(collapsed);
 
     Ok(())
 }
