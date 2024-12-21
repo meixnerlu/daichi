@@ -46,9 +46,9 @@ impl InnerVoiceHandler {
     }
 
     pub fn handle_new_tick(&mut self, tick: Vec<i16>) {
+        self.buffer.push(tick);
         if self.buffer_state < 5 {
             self.buffer_state += 1;
-            self.buffer.push(tick);
         } else {
             self.buffer_state = 0;
             VoiceCache::add(self.guild_id, self.buffer.concat());
