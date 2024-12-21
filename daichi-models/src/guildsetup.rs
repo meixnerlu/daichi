@@ -33,7 +33,7 @@ impl GuildSetup {
 
         Self::delete(doc! {"guild_id": guild_id.to_string()}).await?;
 
-        state.guild_cache().remove(&guild_id);
+        state.guild_cache().remove(&guild_id).await;
 
         Ok(())
     }
@@ -49,52 +49,35 @@ impl GuildSetup {
             let guild = guild?;
 
             out.push(guild.clone());
-            cache.insert(guild.guild_id, guild.role_to_watch);
+            cache.insert(guild.guild_id, guild.role_to_watch).await;
         }
 
         Ok(out)
     }
 
     pub async fn guild_exists(guild_id: impl Into<serenity::GuildId>) -> Result<bool> {
-        let guild_id = guild_id.into();
-        let state = Data::global().await;
-        match state.guild_cache().get(&guild_id) {
-            Some(_) => Ok(true),
-            None => {
-                let setup = GuildSetup::get(doc! {"guild_id": guild_id.to_string()}).await?;
-                match setup {
-                    Some(setup) => {
-                        state
-                            .guild_cache()
-                            .insert(setup.guild_id, setup.role_to_watch);
-                        Ok(false)
-                    }
-                    None => Ok(false),
-                }
-            }
-        }
+        let setup = Self::get_data(guild_id).await;
+
+        Ok(setup.is_ok())
     }
 
     pub async fn get_data(
         guild_id: impl Into<serenity::GuildId>,
     ) -> Result<Option<serenity::RoleId>> {
         let guild_id = guild_id.into();
-        let state = Data::global().await;
-        match state.guild_cache().get(&guild_id) {
-            Some(data) => Ok(data),
-            None => {
-                let setup = GuildSetup::get(doc! {"guild_id": guild_id.to_string()}).await?;
-                match setup {
-                    Some(setup) => {
-                        state
-                            .guild_cache()
-                            .insert(setup.guild_id, setup.role_to_watch);
-                        Ok(setup.role_to_watch)
-                    }
-                    None => Ok(None),
+        let cache = Data::global().await.guild_cache();
+
+        cache
+            .try_get_with(guild_id, async move {
+                match Self::get(doc! {"guild_id": guild_id.to_string()}).await {
+                    Ok(setup) => setup
+                        .ok_or(std::fmt::Error)
+                        .map(|setup| setup.role_to_watch),
+                    Err(_) => Err(std::fmt::Error),
                 }
-            }
-        }
+            })
+            .await
+            .map_err(Error::from_any)
     }
 
     pub async fn setup_collection() -> Result<()> {
@@ -129,7 +112,7 @@ impl MongoCrud for GuildSetup {
 
         let cache = Data::global().await.guild_cache();
 
-        cache.insert(self.guild_id, self.role_to_watch);
+        cache.insert(self.guild_id, self.role_to_watch).await;
 
         Ok(())
     }
@@ -151,7 +134,7 @@ impl MongoCrud for GuildSetup {
             .unwrap()
             .into();
 
-        cache.remove(&guild_id);
+        cache.remove(&guild_id).await;
 
         Ok(())
     }

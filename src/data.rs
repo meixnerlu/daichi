@@ -2,7 +2,7 @@ use std::env;
 
 use crate::prelude::*;
 use async_once_cell::OnceCell;
-use moka::sync::Cache;
+use moka::future::Cache;
 use mongodb::{Client, Database};
 
 const DATABASE: &str = "daichi";
