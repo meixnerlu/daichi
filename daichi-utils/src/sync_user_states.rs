@@ -19,7 +19,7 @@ pub async fn sync_user_states(
 
     for guild in guilds {
         let db_active = UserDcEvent::active_users(guild.guild_id).await?;
-        let dc_active = get_dc_active_users(ctx, &guild.guild_id).await?;
+        let dc_active = get_dc_active_users(ctx, &guild.guild_id, guild.afk_channel).await?;
 
         for db_active_user in db_active.clone() {
             if !dc_active.contains(&db_active_user) {
@@ -59,6 +59,7 @@ pub async fn sync_user_states(
 async fn get_dc_active_users(
     ctx: &serenity::Context,
     guild_id: &serenity::GuildId,
+    afk_channel: Option<serenity::ChannelId>,
 ) -> Result<Vec<serenity::UserId>> {
     let out = vec![];
 
@@ -66,7 +67,12 @@ async fn get_dc_active_users(
         return Ok(cached_guild
             .voice_states
             .iter()
-            .filter(|(_, state)| state.channel_id.is_some())
+            .filter(|(_, state)| match afk_channel {
+                Some(afk_channel) => state
+                    .channel_id
+                    .is_some_and(|channel_id| channel_id != afk_channel),
+                None => state.channel_id.is_some(),
+            })
             .map(|(user, _)| *user)
             .collect());
     };

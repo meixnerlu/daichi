@@ -2,7 +2,7 @@ use daichi::*;
 use daichi_handlers::on_error_user;
 use daichi_models::{guildsetup::GuildSetup, mongo_crud::MongoCrud};
 use daichi_utils::{
-    button_selects::{bool_select, role_select},
+    button_selects::{bool_select, channel_select, role_select},
     sync_user_states::sync_user_states,
 };
 use poise::command;
@@ -30,6 +30,8 @@ pub async fn setup(ctx: Context<'_>) -> Result<()> {
 
     let role_to_watch = role_select(ctx, guild_id).await?;
 
+    let afk_channel = channel_select(ctx, guild_id).await?;
+
     let msg = ctx
         .channel_id()
         .send_message(
@@ -38,10 +40,16 @@ pub async fn setup(ctx: Context<'_>) -> Result<()> {
         )
         .await?;
 
-    if GuildSetup::new(guild_id, ctx.channel_id(), role_to_watch, msg.id)
-        .insert()
-        .await
-        .is_err()
+    if GuildSetup::new(
+        guild_id,
+        ctx.channel_id(),
+        role_to_watch,
+        afk_channel,
+        msg.id,
+    )
+    .insert()
+    .await
+    .is_err()
     {
         ctx.reply("Your server is already registerd. Use \"/setup delete\" to remove your server")
             .await?;

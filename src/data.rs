@@ -8,7 +8,8 @@ use mongodb::{Client, Database};
 const DATABASE: &str = "daichi";
 static DATACELL: OnceCell<Data> = OnceCell::new();
 
-type GuildCache = Cache<serenity::GuildId, Option<serenity::RoleId>>;
+pub type GuildCache = Cache<serenity::GuildId, GuildCacheData>;
+pub type GuildCacheData = (Option<serenity::RoleId>, Option<serenity::ChannelId>);
 
 // I want to use OnceCell not the build in data in poise so I dont have to pass it to data
 // functions

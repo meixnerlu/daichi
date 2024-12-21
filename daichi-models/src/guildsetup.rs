@@ -9,6 +9,7 @@ pub struct GuildSetup {
     pub guild_id: serenity::GuildId,
     pub channel_id: serenity::ChannelId,
     pub role_to_watch: Option<serenity::RoleId>,
+    pub afk_channel: Option<serenity::ChannelId>,
     pub leaderboard_message: serenity::MessageId,
 }
 
@@ -17,12 +18,14 @@ impl GuildSetup {
         guild_id: impl Into<serenity::GuildId>,
         channel_id: impl Into<serenity::ChannelId>,
         role_to_watch: Option<serenity::RoleId>,
+        afk_channel: Option<serenity::ChannelId>,
         leaderboard_message: impl Into<serenity::MessageId>,
     ) -> Self {
         Self {
             guild_id: guild_id.into(),
             channel_id: channel_id.into(),
             role_to_watch,
+            afk_channel,
             leaderboard_message: leaderboard_message.into(),
         }
     }
@@ -49,7 +52,9 @@ impl GuildSetup {
             let guild = guild?;
 
             out.push(guild.clone());
-            cache.insert(guild.guild_id, guild.role_to_watch).await;
+            cache
+                .insert(guild.guild_id, (guild.role_to_watch, guild.afk_channel))
+                .await;
         }
 
         Ok(out)
@@ -61,9 +66,7 @@ impl GuildSetup {
         Ok(setup.is_ok())
     }
 
-    pub async fn get_data(
-        guild_id: impl Into<serenity::GuildId>,
-    ) -> Result<Option<serenity::RoleId>> {
+    pub async fn get_data(guild_id: impl Into<serenity::GuildId>) -> Result<GuildCacheData> {
         let guild_id = guild_id.into();
         let cache = Data::global().await.guild_cache();
 
@@ -72,7 +75,7 @@ impl GuildSetup {
                 match Self::get(doc! {"guild_id": guild_id.to_string()}).await {
                     Ok(setup) => setup
                         .ok_or(std::fmt::Error)
-                        .map(|setup| setup.role_to_watch),
+                        .map(|setup| (setup.role_to_watch, setup.afk_channel)),
                     Err(_) => Err(std::fmt::Error),
                 }
             })
@@ -93,6 +96,19 @@ impl GuildSetup {
             doc! {"guild_id": guild_id.to_string()}, 
             doc! {"$set": {"channel_id": channel_id.to_string(), "leaderboard_message": message_id.to_string()}}
         ).await
+    }
+
+    pub async fn change_afk_channel(
+        guild_id: impl Into<serenity::GuildId>,
+        afk_channel: Option<serenity::ChannelId>,
+    ) -> Result<()> {
+        let guild_id = guild_id.into();
+
+        Self::change(
+            doc! {"guild_id": guild_id.to_string()},
+            doc! {"$set": {"afk_channel": afk_channel.map(|id| id.to_string()) }},
+        )
+        .await
     }
 
     pub async fn setup_collection() -> Result<()> {
@@ -127,7 +143,9 @@ impl MongoCrud for GuildSetup {
 
         let cache = Data::global().await.guild_cache();
 
-        cache.insert(self.guild_id, self.role_to_watch).await;
+        cache
+            .insert(self.guild_id, (self.role_to_watch, self.afk_channel))
+            .await;
 
         Ok(())
     }
