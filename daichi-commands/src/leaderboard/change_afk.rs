@@ -9,7 +9,8 @@ use poise::command;
     slash_command,
     guild_only,
     on_error = "on_error_user",
-    default_member_permissions = "ADMINISTRATOR"
+    default_member_permissions = "ADMINISTRATOR",
+    ephemeral
 )]
 pub async fn change_afk(ctx: Context<'_>) -> Result<()> {
     let guild_id = ctx.guild_id().unwrap();
@@ -18,7 +19,11 @@ pub async fn change_afk(ctx: Context<'_>) -> Result<()> {
 
     GuildSetup::change_afk_channel(guild_id, afk_channel).await?;
 
+    let msg = ctx.reply("Updating now...").await?;
+
     sync_user_states(ctx.serenity_context(), vec![guild_id]).await?;
+
+    msg.delete(ctx).await?;
 
     Ok(())
 }
