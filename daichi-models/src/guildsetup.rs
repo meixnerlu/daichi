@@ -80,6 +80,21 @@ impl GuildSetup {
             .map_err(Error::from_any)
     }
 
+    pub async fn change_message_id(
+        guild_id: impl Into<serenity::GuildId>,
+        channel_id: impl Into<serenity::ChannelId>,
+        message_id: impl Into<serenity::MessageId>,
+    ) -> Result<()> {
+        let guild_id = guild_id.into();
+        let channel_id = channel_id.into();
+        let message_id = message_id.into();
+
+        Self::change(
+            doc! {"guild_id": guild_id.to_string()}, 
+            doc! {"$set": {"channel_id": channel_id.to_string(), "leaderboard_message": message_id.to_string()}}
+        ).await
+    }
+
     pub async fn setup_collection() -> Result<()> {
         let db = Self::get_database().await;
 
