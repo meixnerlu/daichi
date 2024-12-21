@@ -1,6 +1,6 @@
 use daichi::*;
 use daichi_leaderboard::leaderboards;
-use daichi_models::guildsetup::GuildSetup;
+use daichi_models::{guildsetup::GuildSetup, mongo_crud::MongoCrud, user_dc_event::UserDcEvent};
 use daichi_utils::sync_user_states::sync_user_states;
 use role_button::handle_role_toggle;
 use voice_event::handle_voice_event;
@@ -27,6 +27,11 @@ pub async fn event_handler(
                     handle_voice_event(new, ctx).await?;
                 }
             }
+        }
+        serenity::FullEvent::GuildMemberRemoval { guild_id, user, .. } => {
+            UserDcEvent::delete(
+            doc! {"metadata.guild_id": guild_id.to_string(), "metadata.user_id": user.id.to_string()},
+            ).await?;
         }
         serenity::FullEvent::GuildCreate { guild, .. } => {
             poise::builtins::register_in_guild(&ctx.http, &framework.options().commands, guild.id)
