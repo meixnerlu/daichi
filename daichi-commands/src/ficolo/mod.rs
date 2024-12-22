@@ -10,14 +10,13 @@ mod setup;
     slash_command,
     guild_only,
     default_member_permissions = "ADMINISTRATOR",
-    subcommands("setup::setup"),
+    subcommands("setup::setup", "overview::overview"),
     subcommand_required
 )]
 pub async fn ficolo(_: Context<'_>) -> Result<()> {
     Ok(())
 }
 
-#[allow(dead_code)] // idk why but rust-analyzer thinks its unused
 async fn check_guild(ctx: Context<'_>) -> Result<bool> {
     let guild_id = ctx.guild_id().unwrap();
     FicoloSetup::guild_exists(guild_id).await
