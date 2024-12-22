@@ -8,7 +8,8 @@ use serenity::Mentionable;
     guild_only,
     check = "check_guild",
     on_error = "on_error_user",
-    default_member_permissions = "ADMINISTRATOR"
+    default_member_permissions = "ADMINISTRATOR",
+    ephemeral
 )]
 pub async fn role_button(
     ctx: Context<'_>,
@@ -41,6 +42,6 @@ pub async fn role_button(
                 .components(button),
         )
         .await?;
-
+    ctx.reply("Done").await?;
     Ok(())
 }
