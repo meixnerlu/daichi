@@ -1,6 +1,6 @@
 use daichi::*;
 use daichi_handlers::on_error_user;
-use daichi_models::guildsetup::GuildSetup;
+use daichi_models::leaderboardsetup::LeaderboardSetup;
 use poise::command;
 
 mod change_afk;
@@ -33,10 +33,12 @@ pub async fn leaderboard(_: Context<'_>) -> Result<()> {
 
 async fn check_guild(ctx: Context<'_>) -> Result<bool> {
     let guild_id = ctx.guild_id().unwrap();
-    GuildSetup::guild_exists(guild_id).await
+    LeaderboardSetup::guild_exists(guild_id).await
 }
 
 async fn check_no_guild(ctx: Context<'_>) -> Result<bool> {
     let guild_id = ctx.guild_id().unwrap();
-    GuildSetup::guild_exists(guild_id).await.map(|guild| !guild)
+    LeaderboardSetup::guild_exists(guild_id)
+        .await
+        .map(|guild| !guild)
 }

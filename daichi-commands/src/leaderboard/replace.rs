@@ -1,5 +1,4 @@
 use super::*;
-use daichi_models::guildsetup::GuildSetup;
 use daichi_utils::button_selects::bool_select;
 
 /// Creates a new leaderboard message
@@ -30,7 +29,7 @@ pub async fn replace(ctx: Context<'_>) -> Result<()> {
         )
         .await?;
 
-    GuildSetup::change_message_id(guild_id, msg.channel_id, msg.id).await?;
+    LeaderboardSetup::change_message_id(guild_id, msg.channel_id, msg.id).await?;
 
     Ok(())
 }

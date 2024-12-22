@@ -1,7 +1,7 @@
 use daichi::*;
 use daichi_leaderboard::leaderboards;
 use daichi_models::{
-    guildsetup::GuildSetup, mongo_crud::MongoCrud, role_toggle::RoleToggle,
+    leaderboardsetup::LeaderboardSetup, mongo_crud::MongoCrud, role_toggle::RoleToggle,
     user_dc_event::UserDcEvent,
 };
 use daichi_utils::sync_user_states::sync_user_states;
@@ -26,7 +26,7 @@ pub async fn event_handler(
         }
         serenity::FullEvent::VoiceStateUpdate { new, .. } => {
             if let Some(guild_id) = new.guild_id {
-                if GuildSetup::guild_exists(guild_id).await? {
+                if LeaderboardSetup::guild_exists(guild_id).await? {
                     handle_voice_event(new, ctx).await?;
                 }
             }

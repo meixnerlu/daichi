@@ -1,5 +1,7 @@
 use super::*;
-use daichi_models::{guildsetup::GuildSetup, mongo_crud::MongoCrud, role_toggle::RoleToggle};
+use daichi_models::{
+    leaderboardsetup::LeaderboardSetup, mongo_crud::MongoCrud, role_toggle::RoleToggle,
+};
 use serenity::Mentionable;
 
 /// Creates a message with a button where people can get the role that is being watched
@@ -16,7 +18,7 @@ pub async fn role_button(
     #[description = "The text of the button (can be an emote)"] label: String,
 ) -> Result<()> {
     let guild_id = ctx.guild_id().unwrap();
-    let guild_setup = GuildSetup::get(doc! {"guild_id": guild_id.to_string()})
+    let guild_setup = LeaderboardSetup::get(doc! {"guild_id": guild_id.to_string()})
         .await?
         .unwrap();
 

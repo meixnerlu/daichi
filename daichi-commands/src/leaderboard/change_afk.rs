@@ -1,5 +1,5 @@
 use super::*;
-use daichi_models::guildsetup::GuildSetup;
+use daichi_models::leaderboardsetup::LeaderboardSetup;
 use daichi_utils::{button_selects::channel_select, sync_user_states::sync_user_states};
 
 /// Changes the afk channel of the server
@@ -16,7 +16,7 @@ pub async fn change_afk(ctx: Context<'_>) -> Result<()> {
 
     let afk_channel = channel_select(ctx, guild_id).await?;
 
-    GuildSetup::change_afk_channel(guild_id, afk_channel).await?;
+    LeaderboardSetup::change_afk_channel(guild_id, afk_channel).await?;
 
     let msg = ctx.reply("Updating now...").await?;
 

@@ -1,5 +1,5 @@
 use super::*;
-use daichi_models::{guildsetup::GuildSetup, mongo_crud::MongoCrud};
+use daichi_models::{leaderboardsetup::LeaderboardSetup, mongo_crud::MongoCrud};
 use daichi_utils::{
     button_selects::{bool_select, channel_select, role_select},
     sync_user_states::sync_user_states,
@@ -37,7 +37,7 @@ pub async fn setup(ctx: Context<'_>) -> Result<()> {
         )
         .await?;
 
-    if GuildSetup::new(
+    if LeaderboardSetup::new(
         guild_id,
         ctx.channel_id(),
         role_to_watch,

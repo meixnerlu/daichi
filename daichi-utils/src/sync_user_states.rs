@@ -1,6 +1,6 @@
 use daichi::*;
 use daichi_models::{
-    guildsetup::GuildSetup,
+    leaderboardsetup::LeaderboardSetup,
     mongo_crud::MongoCrud,
     user_dc_event::{UserDcEvent, UserEventType},
 };
@@ -10,7 +10,7 @@ pub async fn sync_user_states(
     ctx: &serenity::Context,
     cached_guilds: Vec<serenity::GuildId>,
 ) -> Result<()> {
-    let guilds: Vec<GuildSetup> = GuildSetup::get_guilds()
+    let guilds: Vec<LeaderboardSetup> = LeaderboardSetup::get_guilds()
         .await?
         .iter()
         .filter(|&guild| cached_guilds.contains(&guild.guild_id))

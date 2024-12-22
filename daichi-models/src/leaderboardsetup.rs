@@ -5,7 +5,7 @@ use serenity::futures::StreamExt;
 use crate::mongo_crud::MongoCrud;
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct GuildSetup {
+pub struct LeaderboardSetup {
     pub guild_id: serenity::GuildId,
     pub channel_id: serenity::ChannelId,
     pub role_to_watch: Option<serenity::RoleId>,
@@ -13,7 +13,7 @@ pub struct GuildSetup {
     pub leaderboard_message: serenity::MessageId,
 }
 
-impl GuildSetup {
+impl LeaderboardSetup {
     pub fn new(
         guild_id: impl Into<serenity::GuildId>,
         channel_id: impl Into<serenity::ChannelId>,
@@ -135,7 +135,7 @@ impl GuildSetup {
     }
 }
 
-impl MongoCrud for GuildSetup {
+impl MongoCrud for LeaderboardSetup {
     const COLLECTION: &'static str = "guild_setup";
 
     async fn insert(&self) -> Result<()> {
