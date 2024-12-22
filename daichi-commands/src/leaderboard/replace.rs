@@ -1,13 +1,14 @@
 use daichi::*;
 use daichi_handlers::on_error_user;
 use daichi_models::guildsetup::GuildSetup;
-use daichi_utils::button_selects::bool_select;
+use daichi_utils::{button_selects::bool_select, checks::check_guild};
 use poise::command;
 
 /// Creates a new leaderboard message
 #[command(
     slash_command,
     guild_only,
+    check = "check_guild",
     on_error = "on_error_user",
     default_member_permissions = "ADMINISTRATOR"
 )]
