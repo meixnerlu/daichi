@@ -1,47 +1,42 @@
 use daichi::*;
-use daichi_models::{mongo_crud::MongoCrud, user_dc_event::UserDcEvent};
+use daichi_models::{mongo_crud::MongoCrud, role_toggle::RoleToggle, user_dc_event::UserDcEvent};
 use serenity::CacheHttp;
 
 pub async fn handle_role_toggle(
-    button_press: serenity::ComponentInteraction,
+    role_toggle: RoleToggle,
+    interaction: serenity::ComponentInteraction,
     ctx: &serenity::Context,
 ) -> Result<()> {
-    if !button_press.data.custom_id.starts_with("role_toggle-") {
-        return Ok(());
-    }
-    let mut args = button_press.data.custom_id.split("-");
-    let _ = args.next().unwrap();
-    let guild_id: serenity::GuildId = args.next().unwrap().parse::<u64>().unwrap().into();
-    let role_id: serenity::RoleId = args.next().unwrap().parse::<u64>().unwrap().into();
+    let guild_id = interaction.guild_id.unwrap();
 
-    match button_press
+    match interaction
         .user
-        .has_role(ctx.http(), guild_id, role_id)
+        .has_role(ctx.http(), guild_id, role_toggle.role_id)
         .await
         .unwrap()
     {
         true => {
-            button_press
+            interaction
                 .member
                 .as_ref()
                 .unwrap()
-                .remove_role(ctx.http(), role_id)
+                .remove_role(ctx.http(), role_toggle.role_id)
                 .await?;
-            button_press
+            interaction
                 .create_response(ctx.http(), serenity::CreateInteractionResponse::Acknowledge)
                 .await?;
             UserDcEvent::delete(
-                doc! {"metadata.guild_id": guild_id.to_string(), "metadata.user_id": button_press.user.id.to_string()},
+                doc! {"metadata.guild_id": guild_id.to_string(), "metadata.user_id": interaction.user.id.to_string()},
             ).await?;
         }
         false => {
-            button_press
+            interaction
                 .member
                 .as_ref()
                 .unwrap()
-                .add_role(ctx.http(), role_id)
+                .add_role(ctx.http(), role_toggle.role_id)
                 .await?;
-            button_press
+            interaction
                 .create_response(ctx.http(), serenity::CreateInteractionResponse::Acknowledge)
                 .await?;
         }

@@ -29,7 +29,7 @@ impl Data {
             .await
             .expect("Cannot connect to database");
         Self {
-            db: client.database(DATABASE),
+            db: client.database(&env::var("DATABASE").unwrap_or(DATABASE.to_string())),
             guild_cache: GuildCache::new(10_000),
         }
     }

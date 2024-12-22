@@ -1,6 +1,9 @@
 use daichi::*;
 use daichi_leaderboard::leaderboards;
-use daichi_models::{guildsetup::GuildSetup, mongo_crud::MongoCrud, user_dc_event::UserDcEvent};
+use daichi_models::{
+    guildsetup::GuildSetup, mongo_crud::MongoCrud, role_toggle::RoleToggle,
+    user_dc_event::UserDcEvent,
+};
 use daichi_utils::sync_user_states::sync_user_states;
 use role_button::handle_role_toggle;
 use voice_event::handle_voice_event;
@@ -39,7 +42,9 @@ pub async fn event_handler(
         }
         serenity::FullEvent::InteractionCreate { interaction } => {
             if let Some(button_press) = interaction.clone().message_component() {
-                handle_role_toggle(button_press, ctx).await?;
+                if let Ok(role_toggle) = RoleToggle::from_json(&button_press.data.custom_id) {
+                    handle_role_toggle(role_toggle, button_press, ctx).await?;
+                }
             }
         }
         _ => {}

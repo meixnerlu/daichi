@@ -1,5 +1,5 @@
 use super::*;
-use daichi_models::{guildsetup::GuildSetup, mongo_crud::MongoCrud};
+use daichi_models::{guildsetup::GuildSetup, mongo_crud::MongoCrud, role_toggle::RoleToggle};
 use serenity::Mentionable;
 
 /// Creates a message with a button where people can get the role that is being watched
@@ -26,10 +26,7 @@ pub async fn role_button(
     let role = guild_setup.role_to_watch.unwrap();
 
     let button = vec![serenity::CreateActionRow::Buttons(vec![
-        serenity::CreateButton::new(
-            "role_toggle-".to_string() + &guild_id.to_string() + "-" + &role.to_string(),
-        )
-        .label(label),
+        serenity::CreateButton::new(RoleToggle::new(role).to_json()?).label(label),
     ])];
     ctx.channel_id()
         .send_message(
