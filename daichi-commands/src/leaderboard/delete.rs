@@ -1,8 +1,6 @@
 use super::*;
-use daichi_handlers::on_error_user;
 use daichi_models::{guildsetup::GuildSetup, mongo_crud::MongoCrud, user_dc_event::UserDcEvent};
 use daichi_utils::button_selects::bool_select;
-use poise::command;
 
 /// Deletes all data of all users on your server and stops watching the server
 #[command(

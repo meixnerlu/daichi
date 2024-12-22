@@ -1,8 +1,6 @@
 use super::*;
-use daichi_handlers::on_error_user;
 use daichi_models::guildsetup::GuildSetup;
 use daichi_utils::button_selects::bool_select;
-use poise::command;
 
 /// Creates a new leaderboard message
 #[command(

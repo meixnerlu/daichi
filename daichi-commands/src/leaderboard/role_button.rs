@@ -1,7 +1,5 @@
 use super::*;
-use daichi_handlers::on_error_user;
 use daichi_models::{guildsetup::GuildSetup, mongo_crud::MongoCrud};
-use poise::command;
 use serenity::Mentionable;
 
 /// Creates a message with a button where people can get the role that is being watched

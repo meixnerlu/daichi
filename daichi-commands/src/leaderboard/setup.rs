@@ -1,11 +1,9 @@
 use super::*;
-use daichi_handlers::on_error_user;
 use daichi_models::{guildsetup::GuildSetup, mongo_crud::MongoCrud};
 use daichi_utils::{
     button_selects::{bool_select, channel_select, role_select},
     sync_user_states::sync_user_states,
 };
-use poise::command;
 
 /// Runs the leaderboard setup wizzard
 #[command(

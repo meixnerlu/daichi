@@ -1,4 +1,5 @@
 use daichi::*;
+use daichi_handlers::on_error_user;
 use daichi_models::guildsetup::GuildSetup;
 use poise::command;
 
