@@ -1,4 +1,5 @@
 use daichi::*;
+use daichi_models::guildsetup::GuildSetup;
 use poise::command;
 
 mod change_afk;
@@ -27,4 +28,14 @@ mod setup;
 )]
 pub async fn leaderboard(_: Context<'_>) -> Result<()> {
     Ok(())
+}
+
+async fn check_guild(ctx: Context<'_>) -> Result<bool> {
+    let guild_id = ctx.guild_id().unwrap();
+    GuildSetup::guild_exists(guild_id).await
+}
+
+async fn check_no_guild(ctx: Context<'_>) -> Result<bool> {
+    let guild_id = ctx.guild_id().unwrap();
+    GuildSetup::guild_exists(guild_id).await.map(|guild| !guild)
 }

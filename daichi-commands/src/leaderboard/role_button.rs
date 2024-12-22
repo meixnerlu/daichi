@@ -1,7 +1,6 @@
-use daichi::*;
+use super::*;
 use daichi_handlers::on_error_user;
 use daichi_models::{guildsetup::GuildSetup, mongo_crud::MongoCrud};
-use daichi_utils::checks::check_guild;
 use poise::command;
 use serenity::Mentionable;
 
