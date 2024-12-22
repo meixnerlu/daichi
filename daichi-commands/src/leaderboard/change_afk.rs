@@ -1,13 +1,16 @@
 use daichi::*;
 use daichi_handlers::on_error_user;
 use daichi_models::guildsetup::GuildSetup;
-use daichi_utils::{button_selects::channel_select, sync_user_states::sync_user_states};
+use daichi_utils::{
+    button_selects::channel_select, checks::check_guild, sync_user_states::sync_user_states,
+};
 use poise::command;
 
 /// Changes the afk channel of the server
 #[command(
     slash_command,
     guild_only,
+    check = "check_guild",
     on_error = "on_error_user",
     default_member_permissions = "ADMINISTRATOR",
     ephemeral

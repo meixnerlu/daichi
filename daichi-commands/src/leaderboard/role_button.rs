@@ -1,6 +1,7 @@
 use daichi::*;
 use daichi_handlers::on_error_user;
 use daichi_models::{guildsetup::GuildSetup, mongo_crud::MongoCrud};
+use daichi_utils::checks::check_guild;
 use poise::command;
 use serenity::Mentionable;
 
@@ -8,6 +9,7 @@ use serenity::Mentionable;
 #[command(
     slash_command,
     guild_only,
+    check = "check_guild",
     on_error = "on_error_user",
     default_member_permissions = "ADMINISTRATOR"
 )]
