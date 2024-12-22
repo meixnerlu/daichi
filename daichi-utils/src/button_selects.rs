@@ -8,16 +8,13 @@ pub async fn channel_select(
 ) -> Result<Option<serenity::ChannelId>> {
     let buttons = vec![
         serenity::CreateActionRow::SelectMenu(serenity::CreateSelectMenu::new(
-            guild_id.to_string() + "-channel",
+            "channel",
             serenity::CreateSelectMenuKind::Channel {
                 channel_types: Some(vec![ChannelType::Voice]),
                 default_channels: None,
             },
         )),
-        serenity::CreateActionRow::Buttons(vec![serenity::CreateButton::new(
-            guild_id.to_string() + "-no",
-        )
-        .label("no")]),
+        serenity::CreateActionRow::Buttons(vec![serenity::CreateButton::new("no").label("no")]),
     ];
 
     let msg = ctx
@@ -62,15 +59,12 @@ pub async fn role_select(
 ) -> Result<Option<serenity::RoleId>> {
     let buttons = vec![
         serenity::CreateActionRow::SelectMenu(serenity::CreateSelectMenu::new(
-            guild_id.to_string() + "-role",
+            "role",
             serenity::CreateSelectMenuKind::Role {
                 default_roles: None,
             },
         )),
-        serenity::CreateActionRow::Buttons(vec![serenity::CreateButton::new(
-            guild_id.to_string() + "-no",
-        )
-        .label("no")]),
+        serenity::CreateActionRow::Buttons(vec![serenity::CreateButton::new("no").label("no")]),
     ];
 
     let msg = ctx
@@ -112,16 +106,12 @@ pub async fn role_select(
     Ok(None)
 }
 
-pub async fn bool_select(
-    ctx: Context<'_>,
-    guild_id: serenity::GuildId,
-    text: impl Into<String>,
-) -> Result<bool> {
+pub async fn bool_select(ctx: Context<'_>, text: impl Into<String>) -> Result<bool> {
     let text: String = text.into();
 
     let buttons = vec![serenity::CreateActionRow::Buttons(vec![
-        serenity::CreateButton::new(guild_id.to_string() + "-yes").label("yes"),
-        serenity::CreateButton::new(guild_id.to_string() + "-no").label("no"),
+        serenity::CreateButton::new("yes").label("yes"),
+        serenity::CreateButton::new("no").label("no"),
     ])];
 
     let msg = ctx
@@ -140,11 +130,9 @@ pub async fn bool_select(
         .stream();
 
     while let Some(reaction) = reactions.next().await {
-        if &reaction.user == ctx.author()
-            && reaction.data.custom_id.starts_with(&guild_id.to_string())
-        {
+        if &reaction.user == ctx.author() {
             msg.delete(ctx).await?;
-            return Ok(reaction.data.custom_id.ends_with("-yes"));
+            return Ok(&reaction.data.custom_id == "yes");
         }
     }
 

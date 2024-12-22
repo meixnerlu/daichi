@@ -18,7 +18,6 @@ pub async fn setup(ctx: Context<'_>) -> Result<()> {
     let guild_id = ctx.guild_id().unwrap();
     if !bool_select(
         ctx,
-        guild_id,
         "Are you sure you want to create the leaderboard in this channel?",
     )
     .await?

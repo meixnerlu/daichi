@@ -14,13 +14,7 @@ use daichi_utils::button_selects::bool_select;
 pub async fn delete(ctx: Context<'_>) -> Result<()> {
     let guild_id = ctx.guild_id().unwrap();
 
-    if bool_select(
-        ctx,
-        guild_id,
-        "Are you sure you want to remove this server?",
-    )
-    .await?
-    {
+    if bool_select(ctx, "Are you sure you want to remove this server?").await? {
         GuildSetup::remove(guild_id).await?;
         UserDcEvent::delete(doc! {"metadata.guild_id": guild_id.to_string()}).await?;
     }

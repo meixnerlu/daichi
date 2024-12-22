@@ -15,7 +15,6 @@ pub async fn replace(ctx: Context<'_>) -> Result<()> {
 
     if !bool_select(
         ctx,
-        guild_id,
         "Are you sure you want to create the leaderboard in this channel?",
     )
     .await?
