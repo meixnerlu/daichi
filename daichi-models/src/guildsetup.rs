@@ -36,13 +36,13 @@ impl GuildSetup {
 
         Self::delete(doc! {"guild_id": guild_id.to_string()}).await?;
 
-        state.guild_cache().remove(&guild_id).await;
+        state.leaderboard_cache().remove(&guild_id).await;
 
         Ok(())
     }
 
     pub async fn get_guilds() -> Result<Vec<Self>> {
-        let cache = Data::global().await.guild_cache();
+        let cache = Data::global().await.leaderboard_cache();
 
         let mut cursor = Self::get_collection().await.find(doc! {}).await?;
 
@@ -66,9 +66,9 @@ impl GuildSetup {
         Ok(setup.is_ok())
     }
 
-    pub async fn get_data(guild_id: impl Into<serenity::GuildId>) -> Result<GuildCacheData> {
+    pub async fn get_data(guild_id: impl Into<serenity::GuildId>) -> Result<LeaderboardCacheData> {
         let guild_id = guild_id.into();
-        let cache = Data::global().await.guild_cache();
+        let cache = Data::global().await.leaderboard_cache();
 
         cache
             .try_get_with(guild_id, async move {
@@ -141,7 +141,7 @@ impl MongoCrud for GuildSetup {
     async fn insert(&self) -> Result<()> {
         Self::get_collection().await.insert_one(self).await?;
 
-        let cache = Data::global().await.guild_cache();
+        let cache = Data::global().await.leaderboard_cache();
 
         cache
             .insert(self.guild_id, (self.role_to_watch, self.afk_channel))
@@ -159,7 +159,7 @@ impl MongoCrud for GuildSetup {
             .update_many(filter.clone(), change)
             .await?;
 
-        let cache = Data::global().await.guild_cache();
+        let cache = Data::global().await.leaderboard_cache();
         let guild_id: serenity::GuildId = filter
             .get_str("guild_id")
             .unwrap()
