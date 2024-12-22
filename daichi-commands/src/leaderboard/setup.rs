@@ -1,7 +1,7 @@
 use super::*;
 use daichi_models::{leaderboardsetup::LeaderboardSetup, mongo_crud::MongoCrud};
 use daichi_utils::{
-    button_selects::{bool_select, channel_select, role_select},
+    button_selects::{bool_select, channel_select, role_select_opt},
     sync_user_states::sync_user_states,
 };
 
@@ -25,9 +25,12 @@ pub async fn setup(ctx: Context<'_>) -> Result<()> {
         return Ok(());
     }
 
-    let role_to_watch = role_select(ctx, guild_id).await?;
+    let role_to_watch = role_select_opt(ctx,
+        "Do you just want to track a specific role?\n".to_string() +
+        "You can later create a message for your members to get the role with \"/setup role_button\"",
+    ).await?;
 
-    let afk_channel = channel_select(ctx, guild_id).await?;
+    let afk_channel = channel_select(ctx).await?;
 
     let msg = ctx
         .channel_id()

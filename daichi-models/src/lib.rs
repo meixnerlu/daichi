@@ -1,3 +1,4 @@
+pub mod ficolosetup;
 pub mod leaderboardsetup;
 pub mod mongo_crud;
 pub mod role_toggle;

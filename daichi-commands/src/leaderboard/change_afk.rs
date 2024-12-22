@@ -14,7 +14,7 @@ use daichi_utils::{button_selects::channel_select, sync_user_states::sync_user_s
 pub async fn change_afk(ctx: Context<'_>) -> Result<()> {
     let guild_id = ctx.guild_id().unwrap();
 
-    let afk_channel = channel_select(ctx, guild_id).await?;
+    let afk_channel = channel_select(ctx).await?;
 
     LeaderboardSetup::change_afk_channel(guild_id, afk_channel).await?;
 
