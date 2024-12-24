@@ -1,4 +1,3 @@
-use daichi_handlers::on_error_user;
 use daichi_utils::modals::{FicoloTypes, QuestionModal, RoundsModal, StandardModal};
 
 use super::*;

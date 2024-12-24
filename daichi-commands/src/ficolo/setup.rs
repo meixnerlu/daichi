@@ -1,5 +1,4 @@
 use super::*;
-use daichi_handlers::on_error_user;
 use daichi_models::mongo_crud::MongoCrud;
 use daichi_utils::button_selects::{bool_select, role_select};
 use poise::command;

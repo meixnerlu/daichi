@@ -1,5 +1,3 @@
-use daichi_handlers::on_error_user;
-
 use super::*;
 
 /// Sends an overview for the ficolo questions

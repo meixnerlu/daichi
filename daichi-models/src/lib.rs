@@ -1,3 +1,4 @@
+pub mod ficolo_question;
 pub mod ficolosetup;
 pub mod leaderboardsetup;
 pub mod mongo_crud;
