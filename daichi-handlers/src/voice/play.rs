@@ -98,6 +98,6 @@ async fn handle_save(
         }
     }
 
-    msg.delete(ctx.to_owned()).await?;
+    msg.delete(*ctx).await?;
     Ok(())
 }
