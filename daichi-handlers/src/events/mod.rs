@@ -5,9 +5,11 @@ use daichi_models::{
     user_dc_event::UserDcEvent,
 };
 use daichi_utils::sync_user_states::sync_user_states;
+use ficolo::handle_ficolo;
 use role_button::handle_role_toggle;
 use voice_event::handle_voice_event;
 
+mod ficolo;
 mod ready;
 mod role_button;
 mod voice_event;
@@ -44,6 +46,8 @@ pub async fn event_handler(
             if let Some(button_press) = interaction.clone().message_component() {
                 if let Ok(role_toggle) = RoleToggle::from_json(&button_press.data.custom_id) {
                     handle_role_toggle(role_toggle, button_press, ctx).await?;
+                } else if button_press.data.custom_id.starts_with("ficolo-") {
+                    handle_ficolo(ctx, button_press).await?;
                 }
             }
         }

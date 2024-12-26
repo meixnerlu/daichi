@@ -18,15 +18,23 @@ pub enum FicoloTypes {
 }
 
 pub trait QuestionModal: Modal + Send {
-    fn handle_quesion(&self, ctx: Context<'_>) -> impl Future<Output = Result<()>>;
+    fn handle_new(&self, ctx: Context<'_>) -> impl Future<Output = Result<()>>;
+
+    fn to_discord_message(&self) -> String;
+
+    fn handle_update(
+        self,
+        ctx: &serenity::Context,
+        interaction: serenity::ComponentInteraction,
+    ) -> impl Future<Output = Result<()>>;
 
     #[allow(async_fn_in_trait)]
-    async fn handle_modal(ctx: poise::ApplicationContext<'_, DcData, Error>) -> Result<()> {
+    async fn handle_new_modal(ctx: poise::ApplicationContext<'_, DcData, Error>) -> Result<()> {
         let data = Self::execute(ctx).await?;
         match data {
             Some(data) => {
                 let msg = ctx.reply("Creating question...").await?;
-                data.handle_quesion(ctx.into()).await?;
+                data.handle_new(ctx.into()).await?;
                 msg.delete(ctx.into()).await?;
             }
             None => {
@@ -34,5 +42,26 @@ pub trait QuestionModal: Modal + Send {
             }
         };
         Ok(())
+    }
+}
+
+// HACK:
+// So the events only get a serenity context and the execute_on_interaction needs something that
+// turns into a serenity context
+// this just makes that problem go away
+#[derive(Debug, Clone)]
+struct CtxWrapper {
+    ctx: serenity::Context,
+}
+
+impl From<serenity::Context> for CtxWrapper {
+    fn from(value: serenity::Context) -> Self {
+        Self { ctx: value }
+    }
+}
+
+impl AsRef<serenity::Context> for CtxWrapper {
+    fn as_ref(&self) -> &serenity::Context {
+        &self.ctx
     }
 }

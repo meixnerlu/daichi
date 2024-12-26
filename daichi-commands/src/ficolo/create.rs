@@ -16,8 +16,8 @@ pub async fn create(
     #[description = "What kind of questions"] kind: FicoloTypes,
 ) -> Result<()> {
     match kind {
-        FicoloTypes::Standard => StandardModal::handle_modal(ctx).await?,
-        FicoloTypes::Rounds => RoundsModal::handle_modal(ctx).await?,
+        FicoloTypes::Standard => StandardModal::handle_new_modal(ctx).await?,
+        FicoloTypes::Rounds => RoundsModal::handle_new_modal(ctx).await?,
     };
 
     Ok(())

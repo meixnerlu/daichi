@@ -544,6 +544,7 @@ name = "daichi-handlers"
 version = "0.1.0"
 dependencies = [
  "arraydeque",
+ "bson",
  "daichi",
  "daichi-leaderboard",
  "daichi-models",
@@ -585,6 +586,7 @@ dependencies = [
 name = "daichi-utils"
 version = "0.1.0"
 dependencies = [
+ "bson",
  "daichi",
  "daichi-models",
  "mongodb",

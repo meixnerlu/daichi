@@ -7,11 +7,11 @@ use crate::mongo_crud::MongoCrud;
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct FicoloQuestion {
-    guild_id: serenity::GuildId,
-    message_id: serenity::MessageId,
-    question_text: String,
-    rounds: Option<Rounds>,
-    status: QuestionStatus,
+    pub guild_id: serenity::GuildId,
+    pub message_id: serenity::MessageId,
+    pub question_text: String,
+    pub rounds: Option<Rounds>,
+    pub status: QuestionStatus,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
