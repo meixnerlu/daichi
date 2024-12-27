@@ -7,8 +7,8 @@ use super::*;
     slash_command,
     guild_only,
     check = "check_guild",
+    check = "is_admin",
     on_error = "on_error_user",
-    default_member_permissions = "ADMINISTRATOR",
     ephemeral
 )]
 pub async fn clean(ctx: Context<'_>) -> Result<()> {

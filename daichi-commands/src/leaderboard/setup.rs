@@ -11,7 +11,6 @@ use daichi_utils::{
     guild_only,
     check = "check_no_guild",
     on_error = "on_error_user",
-    default_member_permissions = "ADMINISTRATOR",
     ephemeral
 )]
 pub async fn setup(ctx: Context<'_>) -> Result<()> {

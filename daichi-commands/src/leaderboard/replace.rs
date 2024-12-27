@@ -6,8 +6,7 @@ use daichi_utils::button_selects::bool_select;
     slash_command,
     guild_only,
     check = "check_guild",
-    on_error = "on_error_user",
-    default_member_permissions = "ADMINISTRATOR"
+    on_error = "on_error_user"
 )]
 pub async fn replace(ctx: Context<'_>) -> Result<()> {
     let guild_id = ctx.guild_id().unwrap();

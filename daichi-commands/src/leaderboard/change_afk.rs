@@ -8,7 +8,6 @@ use daichi_utils::{button_selects::channel_select, sync_user_states::sync_user_s
     guild_only,
     check = "check_guild",
     on_error = "on_error_user",
-    default_member_permissions = "ADMINISTRATOR",
     ephemeral
 )]
 pub async fn change_afk(ctx: Context<'_>) -> Result<()> {
