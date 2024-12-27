@@ -17,12 +17,15 @@ pub async fn clean(ctx: Context<'_>) -> Result<()> {
     let (_, channel_id) = FicoloSetup::get_data(guild_id).await?;
     let mut messages = channel_id.messages_iter(ctx.http()).boxed();
 
+    let resp = ctx.reply("Cleaning...").await?;
+
     while let Some(Ok(msg)) = messages.next().await {
         if msg.author.id.to_string() != bot_id.to_string() {
             msg.delete(ctx.http()).await?;
         }
     }
 
+    resp.delete(ctx).await?;
     ctx.reply("All clean 👍").await?;
     Ok(())
 }
