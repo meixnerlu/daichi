@@ -2,6 +2,7 @@ use daichi::*;
 use daichi_handlers::on_error_user;
 use daichi_models::ficolosetup::FicoloSetup;
 use poise::command;
+use serenity::Permissions;
 
 mod clean;
 mod create;
@@ -15,7 +16,6 @@ mod setup;
 #[command(
     slash_command,
     guild_only,
-    default_member_permissions = "ADMINISTRATOR",
     subcommands("setup::setup", "overview::overview", "create::create", "clean::clean"),
     subcommand_required
 )]
@@ -30,6 +30,17 @@ async fn is_mod(ctx: Context<'_>) -> Result<bool> {
         Ok(data) => Ok(ctx.author().has_role(ctx.http(), guild_id, data.0).await?),
         Err(_) => Ok(false),
     }
+}
+
+async fn is_admin(ctx: Context<'_>) -> Result<bool> {
+    let out = ctx
+        .author()
+        .member
+        .clone()
+        .unwrap()
+        .permissions
+        .is_some_and(|perms| perms.contains(Permissions::ADMINISTRATOR));
+    Ok(out)
 }
 
 async fn check_guild(ctx: Context<'_>) -> Result<bool> {

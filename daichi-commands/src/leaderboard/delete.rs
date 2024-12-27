@@ -10,7 +10,6 @@ use daichi_utils::button_selects::bool_select;
     guild_only,
     check = "check_guild",
     on_error = "on_error_user",
-    default_member_permissions = "ADMINISTRATOR",
     ephemeral
 )]
 pub async fn delete(ctx: Context<'_>) -> Result<()> {
