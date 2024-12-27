@@ -16,7 +16,6 @@ mod setup;
 #[command(
     slash_command,
     guild_only,
-    default_member_permissions = "ADMINISTRATOR",
     subcommands("setup::setup", "overview::overview", "create::create", "clean::clean"),
     subcommand_required
 )]
