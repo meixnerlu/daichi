@@ -35,7 +35,7 @@ pub async fn setup(ctx: Context<'_>) -> Result<()> {
             ctx.http(),
             CreateMessage::default().content(
                 "This Channel is used to manage this servers questionset.\n".to_string() + 
-                "If you include explicit stuff in questions make sure the channel is NSFW!!!" +
+                "If you include explicit stuff in questions make sure the channel is NSFW!!!\n" +
                 "If you want an overview on what questions do and what kinds exist then use:\n" +
                 "`/ficolo overview`",
             ),
