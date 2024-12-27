@@ -33,11 +33,13 @@ async fn is_mod(ctx: Context<'_>) -> Result<bool> {
 }
 
 async fn is_admin(ctx: Context<'_>) -> Result<bool> {
+    let guild_id = ctx.guild_id().unwrap();
+    let user_id = ctx.author().id;
+
     let out = ctx
-        .author()
-        .member
-        .clone()
-        .unwrap()
+        .http()
+        .get_member(guild_id, user_id)
+        .await?
         .permissions
         .is_some_and(|perms| perms.contains(Permissions::ADMINISTRATOR));
     Ok(out)
