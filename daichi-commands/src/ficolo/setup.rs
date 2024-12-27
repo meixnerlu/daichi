@@ -10,7 +10,7 @@ use serenity::CreateMessage;
     guild_only,
     on_error = "on_error_user",
     check = "check_no_guild",
-    check = "is_admin",
+    required_permissions = "ADMINISTRATOR",
     ephemeral
 )]
 pub async fn setup(ctx: Context<'_>) -> Result<()> {

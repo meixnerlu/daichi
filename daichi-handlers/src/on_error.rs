@@ -12,6 +12,8 @@ pub async fn on_error_owner(error: FrameworkError<'_, DcData, daichi::Error>) {
         .unwrap();
 }
 pub async fn on_error_user(error: FrameworkError<'_, DcData, daichi::Error>) {
+    println!("{error}");
+
     error
         .ctx()
         .unwrap()
