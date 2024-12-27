@@ -6,7 +6,6 @@ use super::*;
     guild_only,
     check = "check_guild",
     on_error = "on_error_user",
-    default_member_permissions = "ADMINISTRATOR",
     ephemeral
 )]
 pub async fn overview(ctx: Context<'_>) -> Result<()> {

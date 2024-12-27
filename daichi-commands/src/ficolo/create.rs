@@ -8,7 +8,6 @@ use super::*;
     guild_only,
     check = "is_mod",
     on_error = "on_error_user",
-    default_member_permissions = "ADMINISTRATOR",
     ephemeral
 )]
 pub async fn create(
