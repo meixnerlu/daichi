@@ -76,3 +76,4 @@ pub async fn handle_ficolo(
 
     Ok(())
 }
+

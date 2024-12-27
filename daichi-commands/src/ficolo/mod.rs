@@ -3,16 +3,20 @@ use daichi_handlers::on_error_user;
 use daichi_models::ficolosetup::FicoloSetup;
 use poise::command;
 
+mod clean;
 mod create;
 mod overview;
 mod setup;
 
 /// use ´/help ficolo´
+///
+/// Ficolo is a drinking game I wrote an app for my friends but writing apps for IOS costs money
+/// So its in this discord bot you can just ignore it if you dont wanna use it
 #[command(
     slash_command,
     guild_only,
     default_member_permissions = "ADMINISTRATOR",
-    subcommands("setup::setup", "overview::overview", "create::create"),
+    subcommands("setup::setup", "overview::overview", "create::create", "clean::clean"),
     subcommand_required
 )]
 pub async fn ficolo(_: Context<'_>) -> Result<()> {

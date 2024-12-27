@@ -4,6 +4,7 @@ use daichi_utils::button_selects::{bool_select, role_select};
 use poise::command;
 use serenity::CreateMessage;
 
+/// Runs the wizzard for setting up ficolo
 #[command(
     slash_command,
     guild_only,
