@@ -19,7 +19,7 @@ pub struct RoundsModal {
     #[placeholder = "x or x-y"]
     rounds: String,
     #[name = "Question"]
-    #[placeholder = "For (rounds) rounds (player1) has to drink double"]
+    #[placeholder = "For [rounds] rounds [p1] has to drink double"]
     #[paragraph]
     text: String,
 }
