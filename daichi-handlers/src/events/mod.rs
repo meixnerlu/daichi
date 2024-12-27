@@ -1,10 +1,15 @@
 use daichi::*;
 use daichi_leaderboard::leaderboards;
-use daichi_models::{guildsetup::GuildSetup, mongo_crud::MongoCrud, user_dc_event::UserDcEvent};
+use daichi_models::{
+    leaderboardsetup::LeaderboardSetup, mongo_crud::MongoCrud, role_toggle::RoleToggle,
+    user_dc_event::UserDcEvent,
+};
 use daichi_utils::sync_user_states::sync_user_states;
+use ficolo::handle_ficolo;
 use role_button::handle_role_toggle;
 use voice_event::handle_voice_event;
 
+mod ficolo;
 mod ready;
 mod role_button;
 mod voice_event;
@@ -23,7 +28,7 @@ pub async fn event_handler(
         }
         serenity::FullEvent::VoiceStateUpdate { new, .. } => {
             if let Some(guild_id) = new.guild_id {
-                if GuildSetup::guild_exists(guild_id).await? {
+                if LeaderboardSetup::guild_exists(guild_id).await? {
                     handle_voice_event(new, ctx).await?;
                 }
             }
@@ -39,7 +44,11 @@ pub async fn event_handler(
         }
         serenity::FullEvent::InteractionCreate { interaction } => {
             if let Some(button_press) = interaction.clone().message_component() {
-                handle_role_toggle(button_press, ctx).await?;
+                if let Ok(role_toggle) = RoleToggle::from_json(&button_press.data.custom_id) {
+                    handle_role_toggle(role_toggle, button_press, ctx).await?;
+                } else if button_press.data.custom_id.starts_with("ficolo-") {
+                    handle_ficolo(ctx, button_press).await?;
+                }
             }
         }
         _ => {}

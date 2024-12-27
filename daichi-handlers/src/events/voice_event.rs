@@ -1,6 +1,6 @@
 use daichi::*;
 use daichi_models::{
-    guildsetup::GuildSetup,
+    leaderboardsetup::LeaderboardSetup,
     mongo_crud::MongoCrud,
     user_dc_event::{UserDcEvent, UserEventType},
 };
@@ -9,7 +9,7 @@ use serenity::CacheHttp;
 pub async fn handle_voice_event(new: &serenity::VoiceState, ctx: &serenity::Context) -> Result<()> {
     let guild_id = new.guild_id.unwrap();
     let user_id = new.user_id;
-    let (role, afk_channel) = GuildSetup::get_data(guild_id).await?;
+    let (role, afk_channel) = LeaderboardSetup::get_data(guild_id).await?;
     let user = new.user_id.to_user(ctx.http()).await?;
 
     if user.bot {

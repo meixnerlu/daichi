@@ -46,3 +46,12 @@ impl Error {
         }
     }
 }
+
+impl From<&str> for Error {
+    fn from(value: &str) -> Self {
+        Self {
+            kind: ErrorType::Any,
+            reason: value.to_string(),
+        }
+    }
+}

@@ -3,7 +3,7 @@ use daichi::*;
 use bson::Bson;
 use chrono::Duration;
 use daichi_models::{
-    guildsetup::GuildSetup,
+    leaderboardsetup::LeaderboardSetup,
     mongo_crud::MongoCrud,
     user_dc_event::{UserDcEvent, UserEventType},
 };
@@ -39,7 +39,7 @@ pub async fn leaderboards(ctx: &serenity::Context) -> Result<()> {
 }
 
 async fn handle_leaderboards(ctx: &serenity::Context) -> Result<()> {
-    let guilds = GuildSetup::get_guilds().await?;
+    let guilds = LeaderboardSetup::get_guilds().await?;
 
     for guild in guilds {
         let data = get_times_for_guild(guild.guild_id, ctx).await?;

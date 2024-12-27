@@ -1,8 +1,5 @@
-use daichi::*;
-use daichi_handlers::on_error_user;
-use daichi_models::guildsetup::GuildSetup;
-use daichi_utils::{button_selects::bool_select, checks::check_guild};
-use poise::command;
+use super::*;
+use daichi_utils::button_selects::bool_select;
 
 /// Creates a new leaderboard message
 #[command(
@@ -17,7 +14,6 @@ pub async fn replace(ctx: Context<'_>) -> Result<()> {
 
     if !bool_select(
         ctx,
-        guild_id,
         "Are you sure you want to create the leaderboard in this channel?",
     )
     .await?
@@ -33,7 +29,7 @@ pub async fn replace(ctx: Context<'_>) -> Result<()> {
         )
         .await?;
 
-    GuildSetup::change_message_id(guild_id, msg.channel_id, msg.id).await?;
+    LeaderboardSetup::change_message_id(guild_id, msg.channel_id, msg.id).await?;
 
     Ok(())
 }

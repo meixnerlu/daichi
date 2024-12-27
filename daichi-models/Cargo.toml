@@ -7,5 +7,6 @@ edition = "2021"
 mongodb = { workspace = true }
 daichi = { workspace = true }
 serde = { workspace = true }
+serde_json = { workspace = true }
 chrono = { workspace = true }
 bson = { workspace = true }

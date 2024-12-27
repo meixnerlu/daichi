@@ -2,14 +2,16 @@ use daichi::*;
 use daichi_handlers::convert_to_wav;
 use daichi_handlers::on_error_user;
 use daichi_handlers::VoiceCache;
-use poise::{command, CreateReply};
+use poise::command;
+use serenity::CreateMessage;
 
 /// Safes the last minute directly as a wav file
 #[command(
     slash_command,
     guild_only,
     on_error = "on_error_user",
-    guild_cooldown = 10
+    guild_cooldown = 10,
+    ephemeral
 )]
 pub async fn output_wav(ctx: Context<'_>) -> Result<()> {
     let guild_id = ctx.guild_id().unwrap();
@@ -22,14 +24,17 @@ pub async fn output_wav(ctx: Context<'_>) -> Result<()> {
 
             waiting_msg.delete(ctx).await?;
             let waiting_msg = ctx.reply("Sending file to discord...").await?;
-            ctx.send(
-                CreateReply::default()
-                    .content("Here is the last minute of audio")
-                    .attachment(
-                        serenity::CreateAttachment::file(&file.into(), "funny-moment.wav").await?,
-                    ),
-            )
-            .await?;
+            ctx.channel_id()
+                .send_message(
+                    ctx.http(),
+                    CreateMessage::default()
+                        .content("Here is the last minute of audio")
+                        .add_file(
+                            serenity::CreateAttachment::file(&file.into(), "funny-moment.wav")
+                                .await?,
+                        ),
+                )
+                .await?;
             waiting_msg.delete(ctx).await?;
             std::fs::remove_file(path).map_err(Error::from_any)?;
         }

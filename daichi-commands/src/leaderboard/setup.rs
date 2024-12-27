@@ -1,12 +1,9 @@
-use daichi::*;
-use daichi_handlers::on_error_user;
-use daichi_models::{guildsetup::GuildSetup, mongo_crud::MongoCrud};
+use super::*;
+use daichi_models::{leaderboardsetup::LeaderboardSetup, mongo_crud::MongoCrud};
 use daichi_utils::{
-    button_selects::{bool_select, channel_select, role_select},
-    checks::check_no_guild,
+    button_selects::{bool_select, channel_select, role_select_opt},
     sync_user_states::sync_user_states,
 };
-use poise::command;
 
 /// Runs the leaderboard setup wizzard
 #[command(
@@ -21,7 +18,6 @@ pub async fn setup(ctx: Context<'_>) -> Result<()> {
     let guild_id = ctx.guild_id().unwrap();
     if !bool_select(
         ctx,
-        guild_id,
         "Are you sure you want to create the leaderboard in this channel?",
     )
     .await?
@@ -29,9 +25,12 @@ pub async fn setup(ctx: Context<'_>) -> Result<()> {
         return Ok(());
     }
 
-    let role_to_watch = role_select(ctx, guild_id).await?;
+    let role_to_watch = role_select_opt(ctx,
+        "Do you just want to track a specific role?\n".to_string() +
+        "You can later create a message for your members to get the role with \"/setup role_button\"",
+    ).await?;
 
-    let afk_channel = channel_select(ctx, guild_id).await?;
+    let afk_channel = channel_select(ctx).await?;
 
     let msg = ctx
         .channel_id()
@@ -41,7 +40,7 @@ pub async fn setup(ctx: Context<'_>) -> Result<()> {
         )
         .await?;
 
-    if GuildSetup::new(
+    if LeaderboardSetup::new(
         guild_id,
         ctx.channel_id(),
         role_to_watch,

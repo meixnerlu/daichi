@@ -1,10 +1,6 @@
-use daichi::*;
-use daichi_handlers::on_error_user;
-use daichi_models::guildsetup::GuildSetup;
-use daichi_utils::{
-    button_selects::channel_select, checks::check_guild, sync_user_states::sync_user_states,
-};
-use poise::command;
+use super::*;
+use daichi_models::leaderboardsetup::LeaderboardSetup;
+use daichi_utils::{button_selects::channel_select, sync_user_states::sync_user_states};
 
 /// Changes the afk channel of the server
 #[command(
@@ -18,9 +14,9 @@ use poise::command;
 pub async fn change_afk(ctx: Context<'_>) -> Result<()> {
     let guild_id = ctx.guild_id().unwrap();
 
-    let afk_channel = channel_select(ctx, guild_id).await?;
+    let afk_channel = channel_select(ctx).await?;
 
-    GuildSetup::change_afk_channel(guild_id, afk_channel).await?;
+    LeaderboardSetup::change_afk_channel(guild_id, afk_channel).await?;
 
     let msg = ctx.reply("Updating now...").await?;
 

@@ -2,6 +2,7 @@ use std::{fs::File, thread::sleep, time::Duration};
 
 use super::{convert_to_wav, VoiceCache};
 use daichi::*;
+use serenity::CreateMessage;
 
 pub async fn handle_play(ctx: &Context<'_>) -> Result<()> {
     let guild_id = ctx.guild_id().expect("the command to be guild only");
@@ -77,15 +78,17 @@ async fn handle_save(
                 interaction
                     .create_response(ctx.http(), serenity::CreateInteractionResponse::Acknowledge)
                     .await?;
-                ctx.send(
-                    poise::CreateReply::default()
-                        .content("Here is the last minute of audio")
-                        .attachment(
-                            serenity::CreateAttachment::file(&file.into(), "funny-moment.wav")
-                                .await?,
-                        ),
-                )
-                .await?;
+                ctx.channel_id()
+                    .send_message(
+                        ctx.http(),
+                        CreateMessage::default()
+                            .content("Here is the last minute of audio")
+                            .add_file(
+                                serenity::CreateAttachment::file(&file.into(), "funny-moment.wav")
+                                    .await?,
+                            ),
+                    )
+                    .await?;
             }
             false => {
                 interaction
@@ -95,6 +98,6 @@ async fn handle_save(
         }
     }
 
-    msg.delete(ctx.to_owned()).await?;
+    msg.delete(*ctx).await?;
     Ok(())
 }
