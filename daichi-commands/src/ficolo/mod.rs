@@ -2,7 +2,6 @@ use daichi::*;
 use daichi_handlers::on_error_user;
 use daichi_models::ficolosetup::FicoloSetup;
 use poise::command;
-use serenity::Permissions;
 
 mod clean;
 mod create;
@@ -30,19 +29,6 @@ async fn is_mod(ctx: Context<'_>) -> Result<bool> {
         Ok(data) => Ok(ctx.author().has_role(ctx.http(), guild_id, data.0).await?),
         Err(_) => Ok(false),
     }
-}
-
-async fn is_admin(ctx: Context<'_>) -> Result<bool> {
-    let guild_id = ctx.guild_id().unwrap();
-    let user_id = ctx.author().id;
-
-    let out = ctx
-        .http()
-        .get_member(guild_id, user_id)
-        .await?
-        .permissions
-        .is_some_and(|perms| perms.contains(Permissions::ADMINISTRATOR));
-    Ok(out)
 }
 
 async fn check_guild(ctx: Context<'_>) -> Result<bool> {
