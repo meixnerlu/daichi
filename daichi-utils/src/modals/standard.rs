@@ -12,7 +12,7 @@ use super::{CtxWrapper, QuestionModal};
 #[name = "Standard question"]
 pub struct StandardModal {
     #[name = "Question"]
-    #[placeholder = "(player1) has to drink (2-4) times."]
+    #[placeholder = "[p1] has to drink [2-4] times."]
     #[paragraph]
     text: String,
 }
