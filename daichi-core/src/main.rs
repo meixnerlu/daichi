@@ -1,25 +1,16 @@
-use std::fs;
-
 use daichi::*;
 use daichi_commands::get_commands;
 use daichi_handlers::event_handler;
-use daichi_models::{
-    ficolo_question::FicoloQuestion, ficolosetup::FicoloSetup, leaderboardsetup::LeaderboardSetup,
-    user_dc_event::UserDcEvent,
-};
 use intents::get_intents;
+use setup::setup;
 use songbird::SerenityInit;
 
 mod intents;
+mod setup;
 
 #[tokio::main]
 async fn main() {
-    let _ = dotenvy::dotenv();
-    let _ = fs::create_dir("/tmp/daichi");
-    let _ = UserDcEvent::setup_collection().await;
-    let _ = LeaderboardSetup::setup_collection().await;
-    let _ = FicoloSetup::setup_collection().await;
-    let _ = FicoloQuestion::setup_collection().await;
+    setup().await;
 
     let token = std::env::var("DISCORD_TOKEN").expect("DISCORD_TOKEN to be present");
 
