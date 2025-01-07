@@ -1,3 +1,4 @@
+use counter::handle_counter;
 use daichi::*;
 use daichi_leaderboard::leaderboards;
 use daichi_models::{
@@ -9,6 +10,7 @@ use ficolo::handle_ficolo;
 use role_button::handle_role_toggle;
 use voice_event::handle_voice_event;
 
+mod counter;
 mod ficolo;
 mod ready;
 mod role_button;
@@ -48,6 +50,8 @@ pub async fn event_handler(
                     handle_role_toggle(role_toggle, button_press, ctx).await?;
                 } else if button_press.data.custom_id.starts_with("ficolo-") {
                     handle_ficolo(ctx, button_press).await?;
+                } else if button_press.data.custom_id == "counter" {
+                    handle_counter(ctx, button_press).await?;
                 }
             }
         }
