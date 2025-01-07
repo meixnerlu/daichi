@@ -42,7 +42,7 @@ impl Counter {
             .await
             .find_one_and_update(
                 doc! {"guild_id": guild_id.to_string(), "message_id": message_id.to_string()},
-                doc! {"$inc": {"counter": 1}, "$push": {"log": user_id.to_string()}},
+                doc! {"$inc": {"current": 1}, "$push": {"log": user_id.to_string()}},
             )
             .await?
             .ok_or("not found")?;
