@@ -26,5 +26,7 @@ pub async fn counter(ctx: Context<'_>, text: String, label: Option<String>) -> R
 
     Counter::new(guild_id, message.id, text).insert().await?;
 
+    ctx.reply("Counter created").await?;
+
     Ok(())
 }
