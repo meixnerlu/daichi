@@ -1,3 +1,4 @@
+use mongodb::options::{FindOneAndUpdateOptions, ReturnDocument};
 use serde::{Deserialize, Serialize};
 use serenity::UserId;
 
@@ -38,12 +39,16 @@ impl Counter {
         let guild_id = guild_id.into();
         let message_id = message_id.into();
 
+        let mut options = FindOneAndUpdateOptions::default();
+        options.return_document = Some(ReturnDocument::After);
+
         let counter = Self::get_collection()
             .await
             .find_one_and_update(
                 doc! {"guild_id": guild_id.to_string(), "message_id": message_id.to_string()},
                 doc! {"$inc": {"current": 1}, "$push": {"log": user_id.to_string()}},
             )
+            .with_options(Some(options))
             .await?
             .ok_or("not found")?;
 
